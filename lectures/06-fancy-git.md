@@ -22,9 +22,14 @@ October 19, 2026
 
 ## Housekeeping
 
-- Welcome back! Where were we?
+- Welcome back! Where were we? Where are we going?
+  - Midterm in class next Wednesday
+  - Up to and including this week (More git stuff, maybe funding models)
+  - Conceptual understanding (e.g. "what does it mean to rebase", not "what is the command to rebase onto upstream")
+	
 - Do we have notetakers for today's [issues](https://github.com/mru-open-source/f26/issues)?
 - How goes part 2?
+  > **Important:** If my instructions don't make sense in the context of your chosen project, make a note of this and describe what does make sense
 
 ---
 
@@ -151,16 +156,29 @@ for i in range(20): # B
 
 ## `reset`, `restore`, `revert`???
 
+<div style="font-size: 0.9em;">
+
 | I want to...                             | Use                                 |
 | ---------------------------------------- | ----------------------------------- |
 | Change the last commit                   | `git commit --amend`                |
 | Remove a file from the staging area      | `git restore --staged <file>`       |
-| Discard uncommitted changes*             | `git restore <file>`                |
-| Rewind log to a previous commit          | `git reset <commit> [--soft/hard*]` |
+| **Discard uncommitted changes**          | `git restore <file>`                |
+| Rewind log to a previous commit          | `git reset <commit>` [**`--hard`**] |
 | Inspect the code a previous commit       | `git checkout <commit>`             |
 | Make a new commit undoing a previous one | `git revert <commit>`               |
 
-*Dangerous operation resulting in permanent changes!
+
+Things in **bold** are dangerous operations resulting in permanent changes!
+
+</div>
+
+---
+
+<!-- _class: discussion_question -->
+
+When have you had trouble with git? What was the solution?
+
+<footer style="color: white;">Post your response in the <a href="https://github.com/mru-open-source/f26/discussions/29" style="color: aqua;">Homework Discussion</a></footer>
 
 ---
 
@@ -192,7 +210,7 @@ for i in range(20): # B
 
 ---
 
-## Getting changes from upstream (the fork kind)
+## Getting changes from upstream
 - We've already talked about [rebasing onto `upstream/main`](../labs/03-git-2.md)
 - What if you want a single commit from another branch?
   `git cherry-pick <commit>`
@@ -201,13 +219,66 @@ for i in range(20): # B
 
 ---
 
+## Upstream conventions
+- Commit messages may follow certain rules, e.g.:
+  - [conventional commits](https://www.conventionalcommits.org/en/v1.0.0/), particularly popular with AI-friendly projects
+  - .gitmessage file guidelines (e.g. [Inkscape](https://gitlab.com/inkscape/inkscape/-/blob/master/.gitmessage))
+  - Why is this important? Here's an [example](https://codeberg.org/GramEditor/gram/issues/611)
+  
+- Pull requests may follow certain rules, e.g.:
+  - Squashing to a single commit
+  - Referencing the associated issue
+  - Just like issues, a template may exist (e.g. [Pattern Projector](https://github.com/Pattern-Projector/pattern-projector/blob/main/.github/PULL_REQUEST_TEMPLATE.md))
+
+---
+
 ## Chasing down trouble
+- Some bug reports are **regressions** (and may be labelled as such)
+- It's usually necessary to find the change that caused the regression
+- `git bisect` can help with this:
+  1. `git bisect start`
+  2. `git bisect bad`
+  3. `git bisect good <last-good-commit>`
+  4. Compile, test, and repeat steps 2-3 until 0 steps left
 
 ---
 
 ## Managing dependencies: Submodules
+- Sometimes, dependencies can't be managed with package managers
+- Some projects are split into multiple repos to keep things separate
+- [Git submodules](https://git-scm.com/book/en/v2/Git-Tools-Submodules) are a (sometimes confusing) solution
+- Example: [Inkscape](https://gitlab.com/inkscape/inkscape/-/blob/master/.gitmodules?ref_type=heads) (again)
+- Useful commands:
+  ```bash
+  git clone --recurse-submodules
+  git submodule update --init --recursive
+  ```
+
+> Submodules are tracked separately from the main repo; never do git operations from inside a submodule directory!
 
 ---
 
 ## Managing dependencies: custom patches
+- Sometimes source code from upstream dependencies needs modification, but you don't want to upstream those changes
+- It might make sense to maintain a `.patch` file
+- Patches are applied while building dependencies for the current project
 - Example: [Brave browser](https://github.com/brave/brave-core/tree/master/patches)
+
+---
+
+## Reporting issues upstream
+- Chasing down a problem can involve multiple projects
+- This is a great way to expand your FOSS exposure!
+- Here's an [example](https://gitlab.com/inkscape/inkscape/-/work_items/6242) that seemed like an Inkscape bug, but ended up being a LuaTex/CapyPDF interaction issue
+- When reporting upstream, it is helpful to link to the downstream project issue
+- GitHub and GitLab support [cross-project linking](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/autolinked-references-and-urls#issues-and-pull-requests), but not cross-platform
+
+> Wherever possible, link to the associated item!
+
+---
+
+## Coming up next
+- Discussion about funding models
+- Lab exercise: git merging
+- Review session
+- Midterm
