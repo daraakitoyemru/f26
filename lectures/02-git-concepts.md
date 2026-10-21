@@ -6,7 +6,7 @@ theme: marp-mru
 paginate: true
 ---
 
-<!-- 
+<!--
 _class: title_slide
 _paginate: skip
 -->
@@ -109,7 +109,7 @@ September 14, 2026
 
 ---
 
-## <!-- fit --> Multiple users, multiple forks, multiple branches 
+## <!-- fit --> Multiple users, multiple forks, multiple branches
 - The most common setup in FOSS development
 - One "canonical" repo, each developer has a fork
 - Pull/merge requests (PRs) are **branch-specific**
